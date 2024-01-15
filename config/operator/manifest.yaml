@@ -13,11 +13,13 @@ spec:
         app: cloudformation-stack-operator
     spec:
       containers:
-      - name: cloudformation-stack
+      - command:
+        - /go/main
+        - --capability
+        - CAPABILITY_NAMED_IAM
         image: jagrati8672/capa:v1
-        command: ["/go/main"]
         imagePullPolicy: IfNotPresent
-        env:
-        - name: AWS_CAPABILITIES
-          value: CAPABILITY_IAM$'\n'CAPABILITY_NAMED_IAM
+        name: cloudformation-stack
+        securityContext:
+          allowPrivilegeEscalation: false
       serviceAccountName: cloudformation-operator
