@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudformation-stack-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloudformation-stack-operator
+  template:
+    metadata:
+      labels:
+        app: cloudformation-stack-operator
+    spec:
+      containers:
+      - name: cloudformation-stack
+        image: jagrati8672/capa:v1
+        command: ["/go/main"]
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: AWS_CAPABILITIES
+          value: CAPABILITY_IAM$'\n'CAPABILITY_NAMED_IAM
+      serviceAccountName: cloudformation-operator
